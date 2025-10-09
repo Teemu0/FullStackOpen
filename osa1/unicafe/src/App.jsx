@@ -32,6 +32,30 @@ const App = () => {
     setBad(oldBad + 1)
   }
 
+  const getTotal = () => {
+    return (
+      good + neutral + bad
+    )
+  }
+
+  const getAverage = () => {
+    if (getTotal() == 0) {
+      return 0
+    }
+    return (
+      (good * 1 + bad * (-1)) / getTotal()
+    )
+  }
+
+  const getPosPercentage = () => {
+    if (getTotal() == 0) {
+      return 0
+    }
+    return (
+      (good / getTotal()) * 100
+    )
+  }
+
   return (
     <div>
       <h3>Give feedback</h3>
@@ -42,6 +66,9 @@ const App = () => {
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {getTotal()}</p>
+      <p>average {getAverage()}</p>
+      <p>positive {getPosPercentage()} %</p>
     </div>
   )
 }
