@@ -72,7 +72,21 @@ const App = () => {
     }
     // If name is already taken
     else if (persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
+      if (confirm(`${newName} is already added to phonebook, do you want to replace the old number with a new one?`)) {
+        // need newObject and id
+        const personObject = {
+          name: newName,
+          number: newNumber
+        }
+        const id = getId(newName)
+        personService
+          .update(id, personObject) // updating to server
+          .then((response) => {
+            setPersons(persons.map(person => person.id !== id ? person : response.data)) // updating locally
+            setNewName('')
+            setNewNumber('')
+          })
+      }
     }
     // Else add new person
     else {
@@ -91,9 +105,7 @@ const App = () => {
   }
 
   const removePerson = id => {
-    // finding person's name for confirm prompt
-    const personName = persons.find(person => person.id === id).name 
-    if (confirm(`Do you want to delete user ${personName}?`)) {
+    if (confirm(`Do you want to delete user ${getName(id)}?`)) {
       personService
       .remove(id) // removing from the server
       .then(() => {
@@ -101,6 +113,15 @@ const App = () => {
         setPersons(persons.filter(person => person.id !== id)) // removing locally
       })
     }
+  }
+
+  const getName = id => {
+    // finding person's name for confirm prompt
+    return persons.find(person => person.id === id).name
+  }
+
+  const getId = name => {
+    return persons.find(person => person.name === name).id
   }
 
   const handleNameChange = (event) => {
