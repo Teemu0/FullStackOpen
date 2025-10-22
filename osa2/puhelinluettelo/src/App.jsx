@@ -59,6 +59,17 @@ const Notification = ({ message }) => {
     </div>
   )
 }
+const Error = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -66,6 +77,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
   const [notificationMessage, setNotificationMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -104,6 +116,16 @@ const App = () => {
             setPersons(persons.map(person => person.id !== id ? person : response.data)) // updating locally
             setNewName('')
             setNewNumber('')
+          })
+          .catch(error => {
+            console.log(`error: ${error}`)
+            setErrorMessage(
+              `Person '${newName}' has already been removed from the server`
+            )
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+            setPersons(persons.filter(person => person.id !== id)) // synchronizing local list with server
           })
       }
     }
@@ -178,6 +200,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notificationMessage} />
+      <Error message={errorMessage} />
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
 
       <h2>Add a new name</h2>
