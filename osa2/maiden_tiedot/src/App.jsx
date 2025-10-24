@@ -10,7 +10,16 @@ const Countries = (props) => {
     else if (props.countriesFiltered.length > 1) {
         return (
             <div>
-                {props.countriesFiltered.map(element => <li key={element.cca2}>{element.name.common}</li>)}
+                {props.countriesFiltered.map(element => {
+                    return (
+                        <li key={element.cca2}>
+                            {element.name.common}
+                            <button onClick={() => props.handleButton(element.name.common)}>Show</button>
+                        </li>
+                    )}
+                    )
+                }
+                
             </div>
         )
     }
@@ -57,6 +66,11 @@ const App = () => {
             })
     }, [])
 
+    // Called when clicked on a button. Changes key to associated country name
+    const handleButton = (countryName) => {
+        setKey(countryName)
+    }
+
     // Filter countries by 'key'
     const countriesFiltered = countries.filter(element => {
             return element.name.common.toLowerCase().includes(key.toLowerCase())         
@@ -67,7 +81,7 @@ const App = () => {
       <form >
         find countries: <input value={key} onChange={handleChange} />
       </form>
-      <Countries countriesFiltered={countriesFiltered} />
+      <Countries countriesFiltered={countriesFiltered} handleButton={handleButton}/>
     </div>
   )
 }
