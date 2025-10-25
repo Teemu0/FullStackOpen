@@ -25,14 +25,21 @@ let persons = [
 ]
 
 app.get('/', (request, response) => {
-  response.send('<h1>Puhelinluettelo</h1>')
+    response.send('<h1>Puhelinluettelo</h1>')
+})
+
+app.get('/info', (request, response) => {
+    const date = new Date()
+    console.log(persons.length, date)
+    response.send(`<p>Phonebook has info for ${persons.length} people</p>
+                    <p>${date}</p>`)
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+    response.json(persons)
 })
 
 const PORT = 3001
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
