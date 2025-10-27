@@ -1,6 +1,5 @@
 const express = require('express')
 var morgan = require('morgan')
-const cors = require('cors')
 const app = express()
 const port = process.env.PORT || 3001
 
@@ -8,8 +7,6 @@ morgan.token('data', function getData (req) {
   return JSON.stringify(req.body)
 })
 
-
-app.use(cors())
 app.use(express.json())
 app.use(express.static('dist'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
