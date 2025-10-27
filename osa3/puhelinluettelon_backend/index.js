@@ -1,6 +1,13 @@
 const express = require('express')
+var morgan = require('morgan')
 const app = express()
+
+morgan.token('data', function getData (req) {
+  return JSON.stringify(req.body)
+})
+
 app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 let persons = [
     {
@@ -78,8 +85,8 @@ app.post('/api/persons', (request, response) => {
 
   const person = {
     "name": body.name,
-    "number": body.number || "",
-    "id": Math.floor(Math.random()*10000) // it is possible to get duplicate ids
+    "number": body.number,
+    "id": Math.floor(Math.random()*10000).toString() // it is possible to get duplicate ids
   }
 
   persons = persons.concat(person)
