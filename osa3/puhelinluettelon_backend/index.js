@@ -88,15 +88,23 @@ app.post('/api/persons', (request, response) => {
       error: 'name must be unique' 
     })
   }
+  // OLD IMPLEMENTATION; BEFORE USING MONGO DATABASE
+  // const person = {
+  //   "name": body.name,
+  //   "number": body.number,
+  //   "id": Math.floor(Math.random()*10000).toString() // it is possible to get duplicate ids
+  // }
+  // persons = persons.concat(person)
+  // response.json(person)
 
-  const person = {
-    "name": body.name,
-    "number": body.number,
-    "id": Math.floor(Math.random()*10000).toString() // it is possible to get duplicate ids
-  }
-
-  persons = persons.concat(person)
+  const person = new Person({
+    name: body.name,
+    number: body.number,
+  })
+  person.save().then(result => {
+  console.log(`added ${person.name} number ${person.number} to phonebook`)
   response.json(person)
+  })
 })
 
 
