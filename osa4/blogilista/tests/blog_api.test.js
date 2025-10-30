@@ -40,6 +40,14 @@ test('all of the blogs are returned, and their content-type is json', async () =
   assert.strictEqual(response.body.length, initialBlogs.length)
 })
 
+test('blogs have \'id\' as their identifier', async () => {
+  const response = await api.get('/api/blogs')
+
+  for (let blog of response.body) {
+    assert.strictEqual('id' in blog, true)  // check if blog has attribute 'id'
+  }
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
