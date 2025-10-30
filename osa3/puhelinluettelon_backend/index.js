@@ -15,22 +15,22 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :d
 
 
 app.get('/', (request, response) => {
-    response.send('<h1>Puhelinluettelo</h1>')
+  response.send('<h1>Puhelinluettelo</h1>')
 })
 
 app.get('/info', (request, response) => {
-    const date = new Date()
-    Person.find({}).then(persons => {
-      response.send(`<p>Phonebook has info for ${persons.length} people</p>
+  const date = new Date()
+  Person.find({}).then(persons => {
+    response.send(`<p>Phonebook has info for ${persons.length} people</p>
                     <p>${date}</p>`)
-    })
+  })
 })
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
   Person.find({}).then(persons => {
     response.json(persons)
   })
-  .catch(error => next(error))
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -47,7 +47,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -57,13 +57,13 @@ app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
   // if (!body.name) {
-  //   return response.status(400).json({ 
-  //     error: 'name missing' 
+  //   return response.status(400).json({
+  //     error: 'name missing'
   //   })
   // }
   // if (!body.number) {
-  //   return response.status(400).json({ 
-  //     error: 'number missing' 
+  //   return response.status(400).json({
+  //     error: 'number missing'
   //   })
   // }
 
@@ -72,7 +72,7 @@ app.post('/api/persons', (request, response, next) => {
     number: body.number,
   })
   person.save()
-    .then(result => {
+    .then(() => {
       console.log(`added ${person.name} number ${person.number} to phonebook`)
       response.json(person)
     })
@@ -119,5 +119,5 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
