@@ -48,6 +48,31 @@ test('blogs have \'id\' as their identifier', async () => {
   }
 })
 
+test('a new blog can be added ', async () => {
+  const newBlog = {
+    _id: "5a422ba71b54a676234d17fb",
+    title: "TDD harms architecture",
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+    likes: 0,
+    __v: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const titles = response.body.map(r => r.title)
+
+  assert.strictEqual(response.body.length, initialBlogs.length + 1)
+
+  assert(titles.includes('TDD harms architecture'))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
