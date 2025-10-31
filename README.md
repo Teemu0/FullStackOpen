@@ -1,6 +1,6 @@
 # FullStackOpen
 
-Jos samaa tehtävää jatketaan myöhemmässä osassa, niin tehtävä on kopioitu myöhemmän osan hakemistoon ja muokattu siellä. Esimerkiksi osassa 2 oleva puhelinluettelo sisältää vain osassa 2 tehdyt tehtävät. Lopullinen puhelinluettelo löytyy osasta _x_.
+Jos samaa tehtäväsarjaa jatketaan useassa eri osassa, niin tehtäväsarjasta on eri versioita eri kansioissa. Esimerkiksi osassa 2 oleva 'puhelinluettelo' sisältää vain osassa 2 tehdyt tehtävät. Lopullinen 'puhelinluettelo' löytyy osasta 3. (kansio 'puhelinluettelo' sisältää puhelinluettelon frontendin. Backend on kansiossa 'puhelinluettelon_backend')
 
 ## osa3
 
